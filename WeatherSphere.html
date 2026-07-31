@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>WeatherSphere</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    min-height:100vh;
+    color:white;
+    overflow-x:hidden;
+}
+
+/* Animated background */
+
+.background{
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:linear-gradient(120deg,#56ccf2,#2f80ed);
+    z-index:-1;
+    animation:changeSky 10s infinite alternate;
+}
+
+@keyframes changeSky{
+    from{
+        filter:hue-rotate(0deg);
+    }
+
+    to{
+        filter:hue-rotate(40deg);
+    }
+}
+
+
+/* Header */
+
+header{
+    text-align:center;
+    padding:35px 10px;
+}
+
+header h1{
+    font-size:45px;
+}
+
+header p{
+    opacity:.8;
+}
+
+
+
+/* Main */
+
+main{
+    width:90%;
+    max-width:1000px;
+    margin:auto;
+}
+
+
+/* Search */
+
+.search-box{
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    margin-bottom:30px;
+}
+
+
+.search-box input{
+
+    width:70%;
+    max-width:400px;
+
+    padding:15px;
+
+    border:none;
+    outline:none;
+
+    border-radius:30px;
+
+    font-size:16px;
+
+}
+
+
+.search-box button{
+
+    padding:15px 25px;
+
+    border:none;
+
+    border-radius:30px;
+
+    background:#ffd166;
+
+    cursor:pointer;
+
+    font-weight:bold;
+
+}
+
+
+
+/* Glass cards */
+
+.weather-card,
+.forecast-section{
+
+    background:rgba(255,255,255,0.18);
+
+    backdrop-filter:blur(15px);
+
+    border-radius:25px;
+
+    padding:25px;
+
+    margin-bottom:25px;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.2);
+
+}
+
+
+/* Current weather */
+
+.location{
+    text-align:center;
+}
+
+
+.temperature{
+
+    text-align:center;
+
+    margin:20px;
+
+}
+
+
+.temperature img{
+
+    width:100px;
+
+}
+
+
+.temperature h1{
+
+    font-size:60px;
+
+}
+
+
+
+.details{
+
+    display:flex;
+
+    justify-content:space-around;
+
+    text-align:center;
+
+}
+
+
+.details div{
+
+    padding:15px;
+
+}
+
+
+
+.forecast-section h2{
+
+    margin-bottom:20px;
+
+}
+
+
+
+/* Forecast cards */
+
+
+.hourly-container,
+.weekly-container{
+
+    display:flex;
+
+    gap:15px;
+
+    overflow-x:auto;
+
+}
+
+
+.forecast-card,
+.day-card{
+
+    min-width:120px;
+
+    text-align:center;
+
+    background:rgba(255,255,255,.2);
+
+    padding:20px;
+
+    border-radius:20px;
+
+    transition:.3s;
+
+}
+
+
+.forecast-card:hover,
+.day-card:hover{
+
+    transform:translateY(-10px);
+
+}
+
+
+
+/* Footer */
+
+footer{
+
+    text-align:center;
+
+    padding:30px;
+
+    opacity:.7;
+
+}
+
+
+
+/* Mobile */
+
+@media(max-width:600px){
+
+    header h1{
+
+        font-size:32px;
+
+    }
+
+
+    .details{
+
+        flex-direction:column;
+
+    }
+
+}
+
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="background"></div>
+
+
+<header>
+
+<h1>🌤 WeatherSphere</h1>
+
+<p>Your Smart 7-Day Weather Forecast</p>
+
+</header>
+
+
+
+<main>
+
+
+<div class="search-box">
+
+<input id="cityInput" placeholder="Enter city name">
+
+<button onclick="searchWeather()">
+Search
+</button>
+
+</div>
+
+
+
+<section class="weather-card">
+
+
+<div class="location">
+
+<h2 id="city">
+Dubai
+</h2>
+
+<p id="date">
+Today
+</p>
+
+</div>
+
+
+
+<div class="temperature">
+
+
+<img id="weatherIcon"
+src="https://openweathermap.org/img/wn/01d@2x.png">
+
+
+<h1>
+
+<span id="temp">
+28
+</span>°C
+
+</h1>
+
+
+<p id="condition">
+Sunny
+</p>
+
+
+</div>
+
+
+
+
+<div class="details">
+
+
+<div>
+💧
+<h3 id="humidity">55%</h3>
+<p>Humidity</p>
+</div>
+
+
+<div>
+💨
+<h3 id="wind">16 km/h</h3>
+<p>Wind</p>
+</div>
+
+
+<div>
+🌡
+<h3 id="feels">31°C</h3>
+<p>Feels Like</p>
+</div>
+
+
+</div>
+
+
+</section>
+<!-- Hourly Forecast -->
+
+<section class="forecast-section">
+
+<h2>Hourly Forecast</h2>
+
+<div class="hourly-container">
+
+<div class="forecast-card">
+☀️
+<h3>12 PM</h3>
+<p>30°C</p>
+</div>
+
+
+<div class="forecast-card">
+🌤
+<h3>2 PM</h3>
+<p>31°C</p>
+</div>
+
+
+<div class="forecast-card">
+☁️
+<h3>4 PM</h3>
+<p>29°C</p>
+</div>
+
+
+<div class="forecast-card">
+🌧
+<h3>6 PM</h3>
+<p>27°C</p>
+</div>
+
+
+<div class="forecast-card">
+🌙
+<h3>9 PM</h3>
+<p>25°C</p>
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- 7 Day Forecast -->
+
+<section class="forecast-section">
+
+<h2>7-Day Forecast</h2>
+
+
+<div class="weekly-container">
+
+
+<div class="day-card">
+<h3>Monday</h3>
+☀️
+<p>30°C / 24°C</p>
+</div>
+
+
+<div class="day-card">
+<h3>Tuesday</h3>
+🌤
+<p>31°C / 25°C</p>
+</div>
+
+
+<div class="day-card">
+<h3>Wednesday</h3>
+🌧
+<p>29°C / 23°C</p>
+</div>
+
+
+<div class="day-card">
+<h3>Thursday</h3>
+⛈
+<p>27°C / 22°C</p>
+</div>
+
+
+<div class="day-card">
+<h3>Friday</h3>
+☀️
+<p>30°C / 24°C</p>
+</div>
+
+
+<div class="day-card">
+<h3>Saturday</h3>
+🌤
+<p>32°C / 25°C</p>
+</div>
+
+
+<div class="day-card">
+<h3>Sunday</h3>
+☀️
+<p>33°C / 26°C</p>
+</div>
+
+
+</div>
+
+</section>
+
+
+</main>
+
+
+
+<footer>
+
+<p>
+© 2026 WeatherSphere | Built with HTML CSS JavaScript
+</p>
+
+</footer>
+
+
+
+<script>
+
+const API_KEY = "8b6f8a320ef6cff8b7d7b806b8b19e7c";
+
+function searchWeather(){
+
+let city = document.getElementById("cityInput").value;
+
+
+if(city===""){
+alert("Please enter a city name");
+return;
+}
+
+fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`)
+.then(response => response.json())
+.then(data => {
+
+    document.getElementById("city").innerHTML = data.name;
+
+    document.getElementById("temp").innerHTML = Math.round(data.main.temp);
+
+    document.getElementById("condition").innerHTML = data.weather[0].description;
+
+    document.getElementById("humidity").innerHTML = data.main.humidity + "%";
+
+    document.getElementById("wind").innerHTML = Math.round(data.wind.speed * 3.6) + " km/h";
+
+    document.getElementById("feels").innerHTML = Math.round(data.main.feels_like) + "°C";
+
+    document.getElementById("weatherIcon").src =
+    "https://openweathermap.org/img/wn/" + data.weather[0].icon + "@2x.png";
+
+});
+
+document.getElementById("city").innerHTML = city;
+
+
+document.getElementById("condition").innerHTML =
+"Weather data loading...";
+
+
+
+
+}
+
+
+
+</script>
+
+
+</body>
+
+</html>
